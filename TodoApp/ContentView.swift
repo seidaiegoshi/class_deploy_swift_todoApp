@@ -21,6 +21,7 @@ struct ContentView: View {
                     .cornerRadius(5)
                 
                 Button("Enter"){
+                    guard !input.isEmpty else{ return}
                     do{
                         try
                         saveTodo(value: input)
@@ -37,8 +38,18 @@ struct ContentView: View {
             }
             .padding()
             .background(.yellow)
-            List(currentTodos,id:\.id){
-                todo in Text(todo.value)
+            List{
+                ForEach(currentTodos) { todo in // ForEachで配列の要素を回す
+                    Text(todo.value)
+                }
+                .onDelete { indexSet in // 該当のデータのindexSetが使える。indexSetという名前にしている
+                    do{
+                       try removeRows(at:indexSet)
+                    }catch{
+                        print(error.localizedDescription)
+                    }
+                        // スワイプして削除する際に保存されているデータからも削除する
+                    }
             }
         }
         .onAppear{
@@ -64,6 +75,10 @@ struct ContentView: View {
     
     func fetchTodos() throws-> [Todo]{
         try JSONDecoder().decode([Todo].self,from:todosData)
+    }
+    private func removeRows(at offsets: IndexSet) throws { // IndexSet型のデータを受け取る
+        currentTodos.remove(atOffsets: offsets) // 配列から指定されたインデックスのデータを削除
+        todosData = try JSONEncoder().encode(currentTodos) // 任意の要素が削除されたcollectTodosをEncodeして保存
     }
 }
 

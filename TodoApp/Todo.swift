@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Todo:Codable{
+struct Todo:Codable,Identifiable{
     let id: UUID
     let value :String
 }
