@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @AppStorage("memo") var savedMemo = "default memo"
     @State var currentMemo = ""
+    let seasons = ["spring", "summer", "fall", "winter"]
     var body: some View {
         VStack {
             HStack{
@@ -30,9 +31,10 @@ struct ContentView: View {
             }
             .padding()
             .background(.yellow)
-            Spacer()
-            Text(savedMemo)
-            Spacer()
+            List(seasons,id:\.self){
+                season in Text(season)
+            }
+            
             
         }
     }
