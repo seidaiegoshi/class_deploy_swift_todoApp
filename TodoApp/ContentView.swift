@@ -8,14 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("memo") var savedMemo = "default memo"
+    @State var currentMemo = ""
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            HStack{
+                TextField("Memo",text:$currentMemo)
+                    .padding()
+                    .background(.white)
+                    .cornerRadius(5)
+                
+                Button("Enter"){
+                    savedMemo = currentMemo
+                    currentMemo = ""
+                }
+                .buttonStyle(.bordered)
+                .background(.blue)
+                .foregroundColor(.white)
+                .cornerRadius(5)
+                
+            }
+            .padding()
+            .background(.yellow)
+            Spacer()
+            Text(savedMemo)
+            Spacer()
+            
         }
-        .padding()
     }
 }
 
